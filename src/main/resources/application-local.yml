@@ -1,0 +1,14 @@
+spring:
+  config:
+    import:
+     - classpath:application-local.yml
+  datasource:
+    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE:sanhak_local}
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: create
+  sql:
+    init:
+      mode: always
