@@ -1,0 +1,20 @@
+package com.github.sanhak.global.exception;
+
+import lombok.Getter;
+
+@Getter
+public class CustomException extends RuntimeException {
+
+    private final int status;
+
+    public CustomException(CustomExceptionCode code){
+
+        this(code.getMessage(), code.getStatus());
+    }
+
+    public CustomException(String message, int status) {
+
+        super(message);
+        this.status = status;
+    }
+}
