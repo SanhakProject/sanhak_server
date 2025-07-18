@@ -13,7 +13,7 @@ spring:
 app:
   jwt:
     key: ${JWT_KEY}
-    accessTokenValidityInMilliseconds: 3600000
+    accessTokenValidityInMilliseconds: ${JWT_ACCESS_TOKEN_EXPIRATION}
 server:
   servlet:
     context-path: /api
