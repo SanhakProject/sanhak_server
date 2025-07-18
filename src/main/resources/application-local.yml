@@ -1,9 +1,7 @@
 spring:
-  config:
-    import:
-      - classpath:application-local.yml
   datasource:
-    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE:sanhak_local}
+    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE}
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:root}
   jpa:
@@ -19,3 +17,5 @@ app:
 server:
   servlet:
     context-path: /api
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS}

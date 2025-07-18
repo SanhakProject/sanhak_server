@@ -1,35 +1,25 @@
 package com.github.sanhak.global.config;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springframework.context.annotation.Bean;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
 
-import static io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP;
+@OpenAPIDefinition(
+        info = @Info(
+                title = "산학프로젝트 API", // TODO: 서비스명 정해지면 변경
+                description = "디지털 사물놀이용 지휘 어플리케이션",
+                version = "v1.0.0"
+        )
+)
+
+@SecurityScheme(
+        name = "JWT",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
 
 @Configuration
-public class SwaggerConfig {
-
-    @Bean
-    public OpenAPI openAPI() {
-
-        return new OpenAPI().components(new Components().addSecuritySchemes("JWT", securityScheme()))
-                .addSecurityItem(new SecurityRequirement().addList("JWT"))
-                .info(info());
-    }
-
-    private Info info() {
-
-        return new Info().title("Sanhak").description("sanhak").version("0.0.0");
-    }
-
-    private SecurityScheme securityScheme() {
-
-        return new SecurityScheme().type(HTTP).bearerFormat("JWT").scheme("bearer");
-    }
-}
-
-
+public class SwaggerConfig {}
