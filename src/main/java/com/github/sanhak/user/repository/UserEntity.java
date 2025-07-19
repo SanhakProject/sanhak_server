@@ -1,9 +1,7 @@
 package com.github.sanhak.user.repository;
 
 import com.github.sanhak.global.entity.BaseTimeEntity;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -13,29 +11,28 @@ import lombok.*;
 @Entity
 public class UserEntity extends BaseTimeEntity {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AuthType authType;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
-    @Nullable
     @Column(unique = true)
     private Long providerId;
 
-    @NotNull
+    @Column(nullable = false)
     private String name;
 
-    @Nullable
+    @Column
     private String phoneNumber;
 
-    @Nullable
+    @Column
     private String password;
 
     public static UserEntity of(String phoneNumber, String password, String name, AuthType authType, Role role) {
