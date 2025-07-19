@@ -11,24 +11,26 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Auth")
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 @RestController
 public class AuthController {
 
     private final AuthService authService;
 
     @Operation(summary = "자체 회원가입")
-    @PostMapping("/auth/signup")
+    @PostMapping("/signup")
     public Response<Void> signup(@Valid @RequestBody SignUpRequest signUpRequest) {
         authService.signUp(signUpRequest);
         return Response.ok();
     }
 
     @Operation(summary = "자체 로그인")
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public Response<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return Response.ok(authService.login(loginRequest));
     }
