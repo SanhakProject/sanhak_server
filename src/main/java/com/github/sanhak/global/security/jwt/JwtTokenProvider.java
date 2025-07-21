@@ -40,7 +40,7 @@ public class JwtTokenProvider {
         return createToken(authentication, jwtProperty.getAccessTokenValidityInMilliseconds());
     }
 
-// 리프레쉬 토큰 필요시 사용
+//    TODO : 리프레쉬 토큰 필요시 사용
 //    public String creatRefreshToken(Authentication authentication) {
 //        return createToken(authentication, jwtProperty.getRefreshTokenValidityInMilliseconds());
 //    }
