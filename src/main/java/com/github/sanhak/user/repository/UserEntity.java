@@ -4,11 +4,12 @@ import com.github.sanhak.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 @Entity
+@Table(name = "users")
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends BaseTimeEntity {
 
     @Id
@@ -20,7 +21,7 @@ public class UserEntity extends BaseTimeEntity {
     private AuthType authType;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role", nullable = false)
     private Role role;
 
     @Column(unique = true)
@@ -29,10 +30,8 @@ public class UserEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column
     private String phoneNumber;
 
-    @Column
     private String password;
 
     public static UserEntity of(String phoneNumber, String password, String name, AuthType authType, Role role) {
