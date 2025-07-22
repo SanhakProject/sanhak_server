@@ -5,6 +5,12 @@ spring:
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:root}
   jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        dialect.storage_engine: innodb
+    show-sql: true
     hibernate:
       ddl-auto: update
   sql:
