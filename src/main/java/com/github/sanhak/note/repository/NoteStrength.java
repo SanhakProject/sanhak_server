@@ -1,14 +1,14 @@
-package com.github.sanhak.user.repository;
+package com.github.sanhak.note.repository;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum AuthType {
-
-    PHONE("전화번호"),
-    KAKAO("카카오");
+public enum NoteStrength {
+    STRONG("강"),
+    MEDIUM("중간"),
+    WEAK("약");
 
     private final String description;
 }

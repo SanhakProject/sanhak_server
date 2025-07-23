@@ -8,6 +8,5 @@ import lombok.Getter;
 @AllArgsConstructor(staticName = "of")
 public class LoginResponse {
 
-    @NotBlank
     String accessToken;
 }
