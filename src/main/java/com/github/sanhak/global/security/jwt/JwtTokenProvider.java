@@ -40,10 +40,9 @@ public class JwtTokenProvider {
         return createToken(authentication, jwtProperty.getAccessTokenValidityInMilliseconds());
     }
 
-//    TODO : 리프레쉬 토큰 필요시 사용
-//    public String creatRefreshToken(Authentication authentication) {
-//        return createToken(authentication, jwtProperty.getRefreshTokenValidityInMilliseconds());
-//    }
+    public String creatRefreshToken(Authentication authentication) {
+        return createToken(authentication, jwtProperty.getRefreshTokenValidityInMilliseconds());
+    }
 
     private String createToken(Authentication authentication, long expireTime) {
         String authorities = authentication.getAuthorities().stream()
