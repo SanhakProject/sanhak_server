@@ -1,6 +1,9 @@
 package com.github.sanhak.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.sanhak.auth.Handler.OAuth2FailureHandler;
+import com.github.sanhak.auth.Handler.OAuth2SuccessHandler;
+import com.github.sanhak.auth.service.CustomOAuth2UserService;
 import com.github.sanhak.global.security.jwt.JwtAuthenticationFilter;
 import com.github.sanhak.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,10 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final ObjectMapper objectMapper;
 
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
+
     private static final String[] SWAGGER_API_PATH = {
             //swagger
             "/v3/api-docs/**",
@@ -60,6 +67,13 @@ public class SecurityConfig {
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers(SWAGGER_API_PATH).permitAll()
                                 .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oAuth2SuccessHandler)
+                        .failureHandler(oAuth2FailureHandler)
                 );
 
         return httpSecurity.build();
