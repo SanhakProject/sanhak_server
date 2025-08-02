@@ -38,9 +38,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String providerId = userInfo.getId();
         String name = userInfo.getName();
 
-        UserEntity user = userRepository.findByProviderId(Long.valueOf(providerId))
+        UserEntity user = userRepository.findByProviderId(providerId)
                 .orElseGet(() -> userRepository.save(UserEntity.builder()
-                        .providerId(Long.valueOf(providerId))
+                        .providerId(providerId)
                         .name(name)
                         .authType(AuthType.KAKAO)
                         .role(Role.USER)

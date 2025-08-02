@@ -9,5 +9,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByPhoneNumberAndAuthType(String phoneNumer, AuthType authType);
 
-    Optional<UserEntity> findByProviderId(Long aLong);
+    Optional<UserEntity> findByProviderId(String providerId);
 }

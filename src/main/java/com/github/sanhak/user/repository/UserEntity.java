@@ -25,7 +25,7 @@ public class UserEntity extends BaseTimeEntity {
     private Role role;
 
     @Column(unique = true)
-    private Long providerId;
+    private String providerId;
 
     @Column(nullable = false)
     private String name;
