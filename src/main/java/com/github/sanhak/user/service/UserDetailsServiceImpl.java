@@ -21,9 +21,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String phoneNumer) {
+    public UserDetails loadUserByUsername(String phoneNumber) {
 
-        UserEntity user = userRepository.findByPhoneNumberAndAuthType(phoneNumer, AuthType.PHONE)
+        UserEntity user = userRepository.findByPhoneNumberAndAuthType(phoneNumber, AuthType.PHONE)
                 .orElseThrow(() -> new UserException(UserExceptionCode.USER_NOT_FOUND));
 
         return new User(
