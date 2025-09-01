@@ -23,8 +23,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InstrumentEntity extends BaseTimeEntity {
     @Id
+    @Column(name = "instrument_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long instrumentId;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
