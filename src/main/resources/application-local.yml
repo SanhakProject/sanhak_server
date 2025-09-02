@@ -39,7 +39,6 @@ app:
   jwt:
     key: ${JWT_KEY}
     accessTokenValidityInMilliseconds: ${JWT_ACCESS_TOKEN_EXPIRATION}
-    refreshTokenValidityInMilliseconds: ${JWT_REFRESH_TOKEN_EXPIRATION}
   oauth:
     callback:
       success: https://${FRONTEND_HOSTNAME}/oauth/callback/success

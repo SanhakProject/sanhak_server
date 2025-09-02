@@ -66,6 +66,7 @@ public class SecurityConfig {
                         httpRequests
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers(SWAGGER_API_PATH).permitAll()
+                                .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth

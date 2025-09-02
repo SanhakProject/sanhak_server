@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 
 @Getter
-public class CustomOAuth2User extends DefaultOAuth2User{
+public class CustomOAuth2User extends DefaultOAuth2User {
 
     private String providerId;
     private String name;
@@ -21,5 +21,10 @@ public class CustomOAuth2User extends DefaultOAuth2User{
         super(authorities, attributes, nameAttributeKey);
         this.providerId = providerId;
         this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return providerId;
     }
 }
