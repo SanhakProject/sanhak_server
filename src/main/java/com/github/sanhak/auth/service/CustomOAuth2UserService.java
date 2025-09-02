@@ -2,10 +2,6 @@ package com.github.sanhak.auth.service;
 
 import com.github.sanhak.auth.CustomOAuth2User;
 import com.github.sanhak.auth.userinfo.KakaoOAuth2UserInfo;
-import com.github.sanhak.user.repository.AuthType;
-import com.github.sanhak.user.repository.Role;
-import com.github.sanhak.user.repository.UserEntity;
-import com.github.sanhak.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -22,8 +18,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final UserRepository userRepository;
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -38,16 +32,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String providerId = userInfo.getId();
         String name = userInfo.getName();
 
-        UserEntity user = userRepository.findByProviderId(providerId)
-                .orElseGet(() -> userRepository.save(UserEntity.builder()
-                        .providerId(providerId)
-                        .name(name)
-                        .authType(AuthType.KAKAO)
-                        .role(Role.USER)
-                        .build()));
-
         return new CustomOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())),
+                Collections.singleton(new SimpleGrantedAuthority("USER")),
                 attributes,
                 userNameAttributeName,
                 providerId,
