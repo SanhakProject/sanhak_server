@@ -22,12 +22,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrackEntity extends BaseTimeEntity {
     @Id
+    @Column(name = "track_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long trackId;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
-    private String audioUrl;
+    private Long durationMs;
+
+    @Column(nullable = false)
+    private String audioKey;
 }
