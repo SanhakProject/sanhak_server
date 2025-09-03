@@ -1,5 +1,6 @@
-package com.github.sanhak.judgment.repository;
+package com.github.sanhak.playresult.repository;
 
+import com.github.sanhak.global.entity.BaseTimeEntity;
 import com.github.sanhak.note.repository.NoteEntity;
 import com.github.sanhak.sheet.repository.SheetEntity;
 import com.github.sanhak.user.repository.UserEntity;
@@ -18,16 +19,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "judgments")
+@Table(name = "playresults")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class JudgmentEntity {
+public class PlayResultEntity extends BaseTimeEntity {
     @Id
+    @Column(name = "play_result_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long judgmentId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -37,14 +41,29 @@ public class JudgmentEntity {
     @JoinColumn(name = "sheet_id", nullable = false)
     private SheetEntity sheet;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "note_id",  nullable = false)
-    private NoteEntity note;
+    @Column(nullable = false)
+    private Integer success;
 
     @Column(nullable = false)
-    private Long success;
+    private Integer fail;
 
-    @Column(nullable = false)
-    private Long fail;
+    @Column(name = "first_failed_measure_idx")
+    private Integer firstFailedMeasureIdx;
+
+    @Column(name = "first_failed_slot_idx")
+    private Integer firstFailedSlotIdx;
+
+    @Column(name = "max_combo", nullable = false)
+    private Integer maxCombo;
+
+    @Column(name = "accuracy", nullable = false)
+    private Double accuracy; // 0.0 ~ 1.0
+
+    @Column(name = "score", nullable = false)
+    private Integer score;
+
+    @Column(name = "played_at", nullable = false)
+    private LocalDateTime playedAt;
+
 
 }

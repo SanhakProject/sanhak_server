@@ -27,17 +27,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoteEntity extends BaseTimeEntity {
     @Id
+    @Column(name = "note_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long noteId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sheet_id",  nullable = false)
     private SheetEntity sheet;
 
-    @Column(nullable = false)
-    private Double timing;
+    @Column(name = "measure_idx", nullable = false)
+    private Integer measureIdx;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "strength",  nullable = false)
-    private NoteStrength strength;
+    @Column(name = "slot_idx", nullable = false)
+    private Integer slotIdx;
+
+    @Column(name = "stroke", nullable = false)
+    private String stroke;
+
+    @Column(name = "lyric")
+    private String lyric;
+
+//    TODO: 연주의 세기(strength) 처리 로직 필요 시 활성화 및 구현
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "strength",  nullable = false)
+//    private NoteStrength strength;
 }

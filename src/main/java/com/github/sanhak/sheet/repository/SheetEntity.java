@@ -27,8 +27,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SheetEntity {
     @Id
+    @Column(name = "sheet_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sheetId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instrument_id", nullable = false)
@@ -41,4 +42,10 @@ public class SheetEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "difficulty", nullable = false)
     private SheetDifficulty difficulty;
+
+    @Column(name = "total_measures", nullable = false)
+    private Integer totalMeasures;
+
+    @Column(name = "interval_ms", nullable = false)
+    private Integer intervalMs;
 }
