@@ -15,7 +15,23 @@ spring:
   sql:
     init:
       mode: always
-
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: "http://localhost:8080/api/login/oauth2/code/kakao"
+            authorization-grant-type: authorization_code
+            scope:
+                - profile_nickname
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 cloud:
   aws:
     s3:
@@ -23,10 +39,16 @@ cloud:
     region:
       static: ap-northeast-2
 
+
+
 app:
   jwt:
     key: ${JWT_KEY}
     accessTokenValidityInMilliseconds: ${JWT_ACCESS_TOKEN_EXPIRATION}
+  oauth:
+    callback:
+      success: https://${FRONTEND_HOSTNAME}/oauth/callback/success
+      failure: https://${FRONTEND_HOSTNAME}/oauth/callback/failure
 server:
   servlet:
     context-path: /api

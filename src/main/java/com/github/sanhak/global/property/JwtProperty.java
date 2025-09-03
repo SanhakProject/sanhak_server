@@ -12,6 +12,4 @@ import org.springframework.stereotype.Component;
 public class JwtProperty {
     private String key;
     private long accessTokenValidityInMilliseconds;
-    //리프레쉬 토큰 사용시 주석 제거
-    //private long refreshTokenValidityInMilliseconds;
 }

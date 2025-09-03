@@ -3,7 +3,10 @@ package com.github.sanhak.global.security.jwt;
 import com.github.sanhak.global.property.JwtProperty;
 import com.github.sanhak.global.security.jwt.exception.JwtAuthenticationException;
 import com.github.sanhak.global.security.jwt.exception.JwtAuthenticationExceptionCode;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -28,6 +30,7 @@ public class JwtTokenProvider {
 
     private final JwtProperty jwtProperty;
     private Key key;
+    private static final String PROVIDER_ID = "provider_id";
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
 
@@ -40,10 +43,6 @@ public class JwtTokenProvider {
         return createToken(authentication, jwtProperty.getAccessTokenValidityInMilliseconds());
     }
 
-//    TODO : 리프레쉬 토큰 필요시 사용
-//    public String creatRefreshToken(Authentication authentication) {
-//        return createToken(authentication, jwtProperty.getRefreshTokenValidityInMilliseconds());
-//    }
 
     private String createToken(Authentication authentication, long expireTime) {
         String authorities = authentication.getAuthorities().stream()
@@ -54,7 +53,7 @@ public class JwtTokenProvider {
         Date tokenExpiresIn = new Date(now + expireTime);
 
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .claim(PROVIDER_ID,  authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .setExpiration(tokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -73,9 +72,9 @@ public class JwtTokenProvider {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        User principal = new User(claims.getSubject(), "", authorities);
+        String providerId = claims.get("provider_id", String.class);
 
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(providerId, token, authorities);
     }
 
     public boolean validateToken(String token) {
