@@ -6,6 +6,7 @@ import com.github.sanhak.auth.Handler.OAuth2SuccessHandler;
 import com.github.sanhak.auth.service.CustomOAuth2UserService;
 import com.github.sanhak.global.security.jwt.JwtAuthenticationFilter;
 import com.github.sanhak.global.security.jwt.JwtTokenProvider;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -62,6 +63,13 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.getWriter().write("{\"status\":401,\"message\":\"Unauthorized\"}");
+                        })
+                )
                 .authorizeHttpRequests((httpRequests) ->
                         httpRequests
                                 .requestMatchers("/auth/**").permitAll()
@@ -83,9 +91,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.stream(allowedOrigins).toList());
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD"));
-        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(false);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

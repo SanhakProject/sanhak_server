@@ -34,11 +34,8 @@ public class TrackRepositoryCustomImpl implements TrackRepositoryCustom {
                 sheet.difficulty,
                 track.durationMs,
                 track.audioKey,
-                ExpressionUtils.as(
-                        JPAExpressions.select(playResult.accuracy.max())
-                                .from(playResult)
-                                .where(playResult.user.id.eq(userId), playResult.sheet.track.id.eq(track.id)), "record"
-                )
+                com.querydsl.core.types.dsl.Expressions.nullExpression(String.class), // audioUrl will be populated by service
+                com.querydsl.core.types.dsl.Expressions.nullExpression(com.github.sanhak.track.controller.dto.response.TrackRecordSummary.class) // record will be null for now
         ))
         .from(track)
         .join(sheet).on(sheet.track.eq(track))
