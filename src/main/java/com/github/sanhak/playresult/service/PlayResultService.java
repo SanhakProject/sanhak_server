@@ -16,14 +16,14 @@ public class PlayResultService {
 
     private final PlayResultRepository playResultRepository;
 
-    public PlayResultFindAllResponse getPlayResults(Long userId, Pageable pageable) {
-        Page<PlayResultEntity> result = playResultRepository
-                .findByUserIdOrderByPlayedAtDesc(userId, pageable);
+    public PlayResultFindAllResponse getPlayResults(Long userId) {
+        List<PlayResultEntity> results = playResultRepository
+                .findByUserIdOrderByPlayedAtDesc(userId);
 
-        List<PlayResultSummary> items = result.getContent().stream()
+        List<PlayResultSummary> items = results.stream()
                 .map(PlayResultSummary::from)
                 .toList();
 
-        return new PlayResultFindAllResponse(items, result.getTotalPages());
+        return new PlayResultFindAllResponse(items);
     }
 }

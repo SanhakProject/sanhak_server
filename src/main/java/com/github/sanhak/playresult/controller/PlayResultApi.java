@@ -9,10 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 
@@ -21,8 +17,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 public interface PlayResultApi {
 
     @Operation(
-            summary = "연주 기록 목록 조회 (페이징)",
-            description = "로그인한 사용자의 과거 연주 기록을 최신순으로 페이징하여 조회합니다. 점수, 정확도, 콤보 등의 상세 정보를 포함합니다."
+            summary = "연주 기록 목록 조회",
+            description = "로그인한 사용자의 악기별 곡에 대한 최대 정확도 기록을 최신순으로 조회합니다. 각 Sheet마다 가장 높은 정확도의 기록만 반환합니다."
     )
     @ApiResponses(
             value = {
@@ -33,8 +29,6 @@ public interface PlayResultApi {
             }
     )
     Response<PlayResultFindAllResponse> getPlayResults(
-            @AuthenticationPrincipal UserAuthInfo userAuthInfo,
-            @Parameter(description = "페이지 정보 (page, size, sort)", example = "page=0&size=10&sort=playedAt,desc")
-            @PageableDefault(size = 10, sort = "playedAt", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable
+            @AuthenticationPrincipal UserAuthInfo userAuthInfo
     );
 }

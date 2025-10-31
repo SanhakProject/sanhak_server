@@ -11,11 +11,8 @@ import java.util.List;
 
 @Builder
 public record PlayResultFindAllResponse(
-        @Schema(description = "지난 기록 목록")
-        List<PlayResultSummary> playResults,
-
-        @Schema(description = "전체 페이지 수", example = "5")
-        int totalPages
+        @Schema(description = "악기별 곡에 대한 최대 정확도 기록 목록")
+        List<PlayResultSummary> playResults
 ) {
     public record PlayResultSummary(
             @Schema(description = "기록 ID", example = "1")
