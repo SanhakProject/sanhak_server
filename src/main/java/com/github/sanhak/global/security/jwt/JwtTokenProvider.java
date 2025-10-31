@@ -1,8 +1,11 @@
 package com.github.sanhak.global.security.jwt;
 
 import com.github.sanhak.global.property.JwtProperty;
+import com.github.sanhak.global.security.UserAuthInfo;
 import com.github.sanhak.global.security.jwt.exception.JwtAuthenticationException;
 import com.github.sanhak.global.security.jwt.exception.JwtAuthenticationExceptionCode;
+import com.github.sanhak.user.repository.UserEntity;
+import com.github.sanhak.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     private final JwtProperty jwtProperty;
+    private final UserRepository userRepository;
     private Key key;
     private static final String PROVIDER_ID = "provider_id";
     private static final String AUTHORITIES_KEY = "auth";
@@ -43,6 +47,13 @@ public class JwtTokenProvider {
         return createToken(authentication, jwtProperty.getAccessTokenValidityInMilliseconds());
     }
 
+    public String createRefreshToken(Authentication authentication) {
+        return createToken(authentication, jwtProperty.getRefreshTokenValidityInMilliseconds());
+    }
+
+    public long getRefreshTokenValidityInMilliseconds() {
+        return jwtProperty.getRefreshTokenValidityInMilliseconds();
+    }
 
     private String createToken(Authentication authentication, long expireTime) {
         String authorities = authentication.getAuthorities().stream()
@@ -74,7 +85,13 @@ public class JwtTokenProvider {
 
         String providerId = claims.get("provider_id", String.class);
 
-        return new UsernamePasswordAuthenticationToken(providerId, token, authorities);
+        // providerId로 사용자를 조회하여 UserAuthInfo 생성
+        UserEntity user = userRepository.findByProviderId(providerId)
+                .orElseThrow(() -> new JwtAuthenticationException(JwtAuthenticationExceptionCode.INVALID_TOKEN));
+
+        UserAuthInfo userAuthInfo = new UserAuthInfo(user, user.getPhoneNumber(), null, null);
+
+        return new UsernamePasswordAuthenticationToken(userAuthInfo, token, authorities);
     }
 
     public boolean validateToken(String token) {

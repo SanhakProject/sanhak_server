@@ -1,5 +1,6 @@
 package com.github.sanhak.track.controller;
 
+import com.github.sanhak.global.dto.Response;
 import com.github.sanhak.global.security.UserAuthInfo;
 import com.github.sanhak.instrument.repository.InstrumentType;
 import com.github.sanhak.track.controller.dto.request.PlayResultRequest;
@@ -9,7 +10,6 @@ import com.github.sanhak.track.controller.dto.response.TrackSheetGrid;
 import com.github.sanhak.track.service.TrackService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,29 +27,28 @@ public class TrackController implements TrackApi {
     private final TrackService trackService;
 
     @GetMapping
-    public ResponseEntity<TrackListResponse> getAllTracksByInstrument(
+    public Response<TrackListResponse> getAllTracksByInstrument(
             @AuthenticationPrincipal UserAuthInfo userAuthInfo,
             @RequestParam InstrumentType instrument
     ) {
-        return ResponseEntity.ok(trackService.getAllTracksByInstrument(userAuthInfo.getUserId(), instrument));
+        return Response.ok(trackService.getAllTracksByInstrument(userAuthInfo.getUserId(), instrument));
     }
 
-   @GetMapping("/{trackId}/{instrument}")
-   public ResponseEntity<TrackSheetGrid> getTrackSheetGridByInstrument(
-           @PathVariable Long trackId,
-           @PathVariable InstrumentType instrument
-   ) {
-        return ResponseEntity.ok(trackService.getTrackSheetGridByInstrument(trackId, instrument));
-   }
+    @GetMapping("/{trackId}/{instrument}")
+    public Response<TrackSheetGrid> getTrackSheetGridByInstrument(
+            @PathVariable Long trackId,
+            @PathVariable InstrumentType instrument
+    ) {
+        return Response.ok(trackService.getTrackSheetGridByInstrument(trackId, instrument));
+    }
 
     @PostMapping("/{trackId}/{instrument}")
-    public ResponseEntity<PlayResultResponse> submitPlayResult(
+    public Response<PlayResultResponse> submitPlayResult(
             @AuthenticationPrincipal UserAuthInfo userAuthInfo,
             @PathVariable Long trackId,
             @PathVariable InstrumentType instrument,
             @Valid @RequestBody PlayResultRequest request
     ) {
-
-        return ResponseEntity.ok(trackService.submitPlayResult(userAuthInfo.getUserId(), trackId, instrument, request));
+        return Response.ok(trackService.submitPlayResult(userAuthInfo.getUserId(), trackId, instrument, request));
     }
 }

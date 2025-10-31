@@ -11,7 +11,8 @@ public interface SheetRepository extends JpaRepository<SheetEntity, Long> {
     @Query("""
        select s from SheetEntity s
        join fetch s.track t
-       where t.id = :trackId and s.instrument = :instrument
+       join fetch s.instrument i
+       where t.id = :trackId and i.type = :instrument
     """)
     Optional<SheetEntity> findByTrackIdAndInstrument(
             @Param("trackId") Long trackId,

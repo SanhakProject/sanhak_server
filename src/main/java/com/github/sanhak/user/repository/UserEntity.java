@@ -41,6 +41,7 @@ public class UserEntity extends BaseTimeEntity {
         user.name = name;
         user.authType = authType;
         user.role = role;
+        user.providerId = phoneNumber;
         return user;
     }
 }
