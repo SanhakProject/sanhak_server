@@ -23,7 +23,7 @@ jobs:
 
       - name: Create application-prod.yaml from secret
         run: |
-          echo "${{ secrets.CONFIG_PROD_BASE64 }}" > src/main/resources/application-prod.yaml
+          echo "${{ secrets.APPLICATION_YAML }}" > src/main/resources/application-prod.yaml
 
       - name: Extract project version
         id: get_version
