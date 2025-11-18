@@ -76,4 +76,5 @@ jobs:
               --name arinori \
               --restart always \
               -p 8080:8080 \
+              --env-file arinori.env \
               ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ needs.build_image.outputs.version }}
